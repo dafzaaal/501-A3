@@ -2,23 +2,8 @@ import java.io.*;
 import java.util.Map;
 import java.util.Scanner;
 
+
 public class ObjectCreator {
-
-    static class SimpleObject {
-        int intValue;
-        double doubleValue;
-        char charValue;
-        
-        @Override
-        public String toString() {
-            return "SimpleObject { " +
-                   "intValue=" + intValue +
-                   ", doubleValue=" + doubleValue +
-                   ", charValue=" + charValue +
-                   " }";
-        }
-    }
-
 
     public static void main(String[] args) {
 
@@ -50,6 +35,8 @@ public class ObjectCreator {
                 simpleObj.charValue = scanner.next().charAt(0);
                 
                 System.out.println("Created Object: " + simpleObj);
+                Serializer serializer = new Serializer();
+                serializer.serialize(simpleObj);
 
             }
             else if(option == 3){
