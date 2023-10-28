@@ -9,7 +9,8 @@ import java.util.List;
 
 public class Serializer {
 
-    public org.jdom2.Document serialize (Object obj) throws Exception {
+
+    public org.jdom2.Document serialize (Object obj) {
 
         Class<?> classObj = obj.getClass();
 
@@ -38,11 +39,23 @@ public class Serializer {
 
         rootElement.addContent(object);
 
+        printDocument(document);
 
+        
         return document;
     }
+
+
+    public void printDocument(Document document) {
+        XMLOutputter xmlOutputter = new XMLOutputter();
+        xmlOutputter.setFormat(Format.getPrettyFormat());
+        try {
+            xmlOutputter.output(document, System.out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public static void main(String[] args) {
-        System.out.println("Inside Serializer.");
-        serialize();
+        System.out.println("Inside Serializer");
     }
 }
