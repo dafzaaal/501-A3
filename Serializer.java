@@ -7,8 +7,15 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Serializer {
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 
+
+public class Serializer {
 
     public org.jdom2.Document serialize (Object obj) {
 
@@ -30,10 +37,38 @@ public class Serializer {
         }
         else {
             for(Field f : fields) {
-                Element field = new Element("field");
-                field.setAttribute("name", f.getName());
-                field.setAttribute("declaringclass", f.getDeclaringClass().toString());
-                object.addContent(field);
+
+                f.setAccessible(true);
+
+                Element fieldInfo = new Element("field");
+                Element primitiveValue = new Element("value");
+
+                Class<?> type = f.getType();
+                Object value = null;
+
+                //Refactor this, you can put finding the value into a separate method
+
+                try {
+                    if (type == int.class) {
+                        value = f.getInt(obj);
+                    } else if (type == double.class) {
+                        value = f.getDouble(obj);
+                    } else if (type == char.class) {
+                        value = f.getChar(obj);
+                    }   
+                }
+                catch (IllegalAccessException e) {
+                    e.printStackTrace(); 
+                }
+                
+  
+
+                primitiveValue.setText(value.toString());
+                fieldInfo.addContent(primitiveValue);
+
+                fieldInfo.setAttribute("name", f.getName());
+                fieldInfo.setAttribute("declaringclass", f.getDeclaringClass().toString());
+                object.addContent(fieldInfo);
             }
         }
 
@@ -41,8 +76,30 @@ public class Serializer {
 
         printDocument(document);
 
+
+        // NOW SEND TO DESERIAlIZER
+
+
+        
+
         
         return document;
+    }
+
+    public void sendToDeserializer(Document document) {
+        final String HOST = "localhost";
+        final int PORT = 8000;
+
+        try (Socket socket = new Socket(HOST, PORT);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
+
+                out.println(document);
+
+            }
+
+        catch(IOException e){
+            e.printStackTrace();;
+        }
     }
 
 
