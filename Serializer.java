@@ -3,6 +3,7 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,22 @@ public class Serializer {
                             value = f.getDouble(entry.getValue());
                         } else if (type == char.class) {
                             value = f.getChar(entry.getValue());
-                        }   
+                        }
+                        else if(type.isArray()) {
+                            Object arrayObj = f.get(entry.getValue());
+                            int length = Array.getLength(arrayObj);
+                            fieldInfo.setAttribute("name", f.getName());
+                            fieldInfo.setAttribute("declaringclass", f.getDeclaringClass().toString());
+
+                            for(int i = 0; i < length; i++) {
+                                Element arrayValue = new Element("value");
+                                Object arrElement = Array.get(arrayObj, i);
+                                arrayValue.setText(arrElement.toString());
+                                fieldInfo.addContent(arrayValue);
+                            }
+                            objElement.addContent(fieldInfo);
+                            continue;
+                        }
                     }
                     catch (IllegalAccessException e) {
                         e.printStackTrace(); 
