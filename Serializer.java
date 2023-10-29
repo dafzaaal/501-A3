@@ -6,7 +6,7 @@ import org.jdom2.output.XMLOutputter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Map;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,62 +17,65 @@ import java.net.Socket;
 
 public class Serializer {
 
-    public org.jdom2.Document serialize (Object obj) {
 
-        Class<?> classObj = obj.getClass();
+    public org.jdom2.Document serialize (Map<Integer, SimpleObject> objects) {
 
         Element rootElement = new Element("serialized");
         Document document = new Document(rootElement);
 
-        Element object = new Element("object");
+        for(Map.Entry<Integer, SimpleObject> entry : objects.entrySet()) {
 
-        
-        object.setAttribute("class", obj.getClass().getName());
-        object.setAttribute("id", "0");
+            Class<?> classObj = entry.getValue().getClass();
 
-        Field[] fields = classObj.getDeclaredFields();
+            Element objElement = new Element("object");
+            String id = String.valueOf(entry.getKey());
+            objElement.setAttribute("class", classObj.getName());
+            objElement.setAttribute("id", id);
 
-        if(fields.length == 0) {
-            System.out.println("Object has no declared fields.");
-        }
-        else {
-            for(Field f : fields) {
+            
+            Field[] fields = classObj.getDeclaredFields();
 
-                f.setAccessible(true);
 
-                Element fieldInfo = new Element("field");
-                Element primitiveValue = new Element("value");
-
-                Class<?> type = f.getType();
-                Object value = null;
-
-                //Refactor this, you can put finding the value into a separate method
-
-                try {
-                    if (type == int.class) {
-                        value = f.getInt(obj);
-                    } else if (type == double.class) {
-                        value = f.getDouble(obj);
-                    } else if (type == char.class) {
-                        value = f.getChar(obj);
-                    }   
-                }
-                catch (IllegalAccessException e) {
-                    e.printStackTrace(); 
-                }
-                
-  
-
-                primitiveValue.setText(value.toString());
-                fieldInfo.addContent(primitiveValue);
-
-                fieldInfo.setAttribute("name", f.getName());
-                fieldInfo.setAttribute("declaringclass", f.getDeclaringClass().toString());
-                object.addContent(fieldInfo);
+            if(fields.length == 0) {
+                System.out.println("Object has no declared fields");
             }
-        }
+            else {
+                for(Field f : fields) {
+                    Element fieldInfo = new Element("field");
+                    Element primitiveValue = new Element("value");
 
-        rootElement.addContent(object);
+                    Class<?> type = f.getType();
+                    Object value = null;
+
+                    try {
+                        if (type == int.class) {
+                            value = f.getInt(entry.getValue());
+                        } else if (type == double.class) {
+                            value = f.getDouble(entry.getValue());
+                        } else if (type == char.class) {
+                            value = f.getChar(entry.getValue());
+                        }   
+                    }
+                    catch (IllegalAccessException e) {
+                        e.printStackTrace(); 
+                    }
+
+                    fieldInfo.setAttribute("name", f.getName());
+                    fieldInfo.setAttribute("declaringclass", f.getDeclaringClass().toString());
+                    primitiveValue.setText(value.toString());
+                    if(primitiveValue != null) {
+                        fieldInfo.addContent(primitiveValue);
+                    }
+                    objElement.addContent(fieldInfo);
+
+                }
+            }
+
+            
+
+            rootElement.addContent(objElement);
+
+        }
 
         printDocument(document);
 

@@ -4,6 +4,12 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+
+
 
 public class ObjectCreator {
 
@@ -53,6 +59,8 @@ public class ObjectCreator {
             }
             else if(option == 3) {
                 System.out.println("Now sending objects to serializer");
+                Serializer serializer = new Serializer();
+                serializer.serialize(createdObjects);
             }
             else if(option == 4){
                 System.out.println("Exiting Program.");
