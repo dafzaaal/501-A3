@@ -24,7 +24,7 @@ public class ObjectCreator {
         Scanner scanner = new Scanner(System.in);
         int option = 0;
         Map<String, Integer> map = Map.of("one", 1, "two", 2, "three", 3, "four", 4);
-        Map<Integer, SimpleObject> createdObjects = new IdentityHashMap<>();
+        Map<Integer, Object> createdObjects = new IdentityHashMap<>();
         System.out.println("Create a type of Object. \n");
 
         while(option != 3) {

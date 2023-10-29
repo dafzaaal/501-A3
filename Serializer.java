@@ -18,12 +18,12 @@ import java.net.Socket;
 public class Serializer {
 
 
-    public org.jdom2.Document serialize (Map<Integer, SimpleObject> objects) {
+    public org.jdom2.Document serialize (Map<Integer, Object> objects) {
 
         Element rootElement = new Element("serialized");
         Document document = new Document(rootElement);
 
-        for(Map.Entry<Integer, SimpleObject> entry : objects.entrySet()) {
+        for(Map.Entry<Integer, Object> entry : objects.entrySet()) {
 
             Class<?> classObj = entry.getValue().getClass();
 
