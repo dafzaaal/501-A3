@@ -38,6 +38,23 @@ public class ObjectCreator {
         return simpleObj;
     }
 
+    public static Object createPrimitiveArrayObject() {
+        Scanner scanner = new Scanner(System.in);
+        PrimitiveArrayObject primitiveArrayObj = new PrimitiveArrayObject();
+
+        System.out.print("Enter the length of the int array: ");
+        int length = scanner.nextInt();
+
+        primitiveArrayObj.integerArray = new int[length];
+
+        for(int i = 0; i < length; i++) {
+            System.out.print("Enter the value for the " +  
+            "#" + (i  + 1) + " position" + ": ");
+            primitiveArrayObj.integerArray[i] = scanner.nextInt();
+        }
+        return primitiveArrayObj;
+    }
+
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -64,31 +81,16 @@ public class ObjectCreator {
             else if(option == 1) {
 
                 Object simpleObj = createSimpleObject();
-
-
                 createdObjects.put(createdObjects.size() + 1, simpleObj);
-
                 printMap(createdObjects);
 
             }
             else if(option == 2) {
-
-                PrimitiveArrayObject primitiveArrayObj = new PrimitiveArrayObject();
-
-                System.out.print("Enter the length of the int array: ");
-                int length = scanner.nextInt();
-
-                primitiveArrayObj.integerArray = new int[length];
-
-                for(int i = 0; i < length; i++) {
-                    System.out.print("Enter the value for the " +  "#" + (i  + 1) + " position" + ": ");
-                    primitiveArrayObj.integerArray[i] = scanner.nextInt();
-                }
-                
+                Object primitiveArrayObj = createPrimitiveArrayObject();
                 createdObjects.put(createdObjects.size() + 1, primitiveArrayObj);
                 printMap(createdObjects);
             }
-            else if(option == 3) {
+            else if(option == 4) {
                 System.out.println("Now sending objects to serializer");
                 System.out.println("\n");
                 Serializer serializer = new Serializer();
