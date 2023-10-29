@@ -44,7 +44,7 @@ public class Deserializer {
     }
 
     public Object deserialize(org.jdom.Document document) {
-
+        // Given the document, look through it, get the class names and create new instances of the objects
     }
 
     public static void main(String[] args) {

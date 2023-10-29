@@ -20,8 +20,16 @@ public class Serializer {
 
     public org.jdom2.Document serialize (Map<Integer, Object> objects) {
 
+        System.out.println("--- Inside the Serializer ---");
+        System.out.println("\n");
+
         Element rootElement = new Element("serialized");
         Document document = new Document(rootElement);
+
+        if(objects.size() == 0) {
+            System.out.println("Object map has size of zero.");
+            return document;
+        }
 
         for(Map.Entry<Integer, Object> entry : objects.entrySet()) {
 

@@ -57,8 +57,26 @@ public class ObjectCreator {
                 printMap(createdObjects);
 
             }
+            else if(option == 2) {
+
+                PrimitiveArrayObject primitiveArrayObj = new PrimitiveArrayObject();
+
+                System.out.println("Enter the length of the int array");
+                int length = scanner.nextInt();
+
+                primitiveArrayObj.integerArray = new int[length];
+
+                for(int i = 0; i < length; i++) {
+                    System.out.println("Enter the value for the " +  "#" + (i  + 1) + " position" + ":");
+                    primitiveArrayObj.integerArray[i] = scanner.nextInt();
+                }
+                
+                createdObjects.put(createdObjects.size() + 1, primitiveArrayObj);
+                printMap(createdObjects);
+            }
             else if(option == 3) {
                 System.out.println("Now sending objects to serializer");
+                System.out.println("\n");
                 Serializer serializer = new Serializer();
                 serializer.serialize(createdObjects);
             }
