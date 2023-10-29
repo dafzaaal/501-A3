@@ -14,7 +14,7 @@ public class ObjectCreator {
 
         while(option != 3) {
             System.out.println("---- Object Creator Menu ----");
-            System.out.println("1. Simple Object \n" + "2. An object that contains an array of primitives. \n" + "3. Exit \n");
+            System.out.println("1. Simple Object \n" + "2. An object that contains an array of primitives. \n" +  "3. Finish and send to Serializer \n" + "4. Exit \n");
             option = scanner.nextInt();
 
             if(!(map.containsValue(option))){
@@ -39,7 +39,10 @@ public class ObjectCreator {
                 serializer.serialize(simpleObj);
 
             }
-            else if(option == 3){
+            else if(option == 3) {
+                System.out.println("Now sending objects to serializer");
+            }
+            else if(option == 4){
                 System.out.println("Exiting Program.");
             }
 

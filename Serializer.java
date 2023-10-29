@@ -78,6 +78,7 @@ public class Serializer {
 
 
         // NOW SEND TO DESERIAlIZER
+        sendToDeserializer(document);
 
 
         
@@ -90,10 +91,11 @@ public class Serializer {
         final String HOST = "localhost";
         final int PORT = 8000;
 
-        try (Socket socket = new Socket(HOST, PORT);
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
+        try (Socket socket = new Socket(HOST, PORT); PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
 
-                out.println(document);
+                XMLOutputter xmlOutputter = new XMLOutputter();
+                String xmlString = xmlOutputter.outputString(document);
+                out.println(xmlString);
 
             }
 
