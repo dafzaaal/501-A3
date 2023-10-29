@@ -31,7 +31,7 @@ public class Deserializer {
                     String receivedXml = xmlBuilder.toString();
                     System.out.println("Received XML:\n" + receivedXml);
 
-                    // If needed, you can deserialize it here
+                    // Convert XML -> document then call deserialize
                       deserialize(receivedXml);
 
                 } catch (IOException e) {
