@@ -64,7 +64,7 @@ public class ObjectCreator {
         Map<Integer, Object> createdObjects = new IdentityHashMap<>();
         System.out.println("Create a type of Object. \n");
 
-        while(option != 3) {
+        while(option != 5) {
             System.out.println("---- Object Creator Menu ----");
             System.out.println( "1. Simple Object \n" + 
                                 "2. An object that contains an array of primitives. \n" +  
@@ -89,6 +89,23 @@ public class ObjectCreator {
                 Object primitiveArrayObj = createPrimitiveArrayObject();
                 createdObjects.put(createdObjects.size() + 1, primitiveArrayObj);
                 printMap(createdObjects);
+            }
+            else if(option == 3) {
+                ObjectWithRefs objectWithRefs = new ObjectWithRefs();
+
+                System.out.println("Creating a Simple Object");
+                Object simpleObj = objectWithRefs.simpleObj = (SimpleObject) createSimpleObject();
+
+                System.out.println("Creating an Object w/ an Array of Primitives");
+                Object primObj = objectWithRefs.primitiveArrayObj = (PrimitiveArrayObject) createPrimitiveArrayObject();
+
+                createdObjects.put(createdObjects.size() + 1, objectWithRefs);
+                createdObjects.put(createdObjects.size() + 1, simpleObj);
+                createdObjects.put(createdObjects.size() + 1, primObj);
+
+                printMap(createdObjects);
+
+
             }
             else if(option == 4) {
                 System.out.println("Now sending objects to serializer");
