@@ -79,6 +79,14 @@ public class Serializer {
                             objElement.addContent(fieldInfo);
                             continue;
                         }
+                        else if(!(type.isPrimitive())) {
+                            Element ref = new Element("reference");
+                            Object refObject = f.get(entry.getValue());
+                            Integer refID = (Integer) objects.get(refObject);
+                            ref.setText(refID.toString());
+                            fieldInfo.addContent(ref);
+                            continue;
+                        }
                     }
                     catch (IllegalAccessException e) {
                         e.printStackTrace(); 

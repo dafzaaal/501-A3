@@ -96,12 +96,8 @@ public class ObjectCreator {
                 System.out.println("Creating a Simple Object");
                 Object simpleObj = objectWithRefs.simpleObj = (SimpleObject) createSimpleObject();
 
-                System.out.println("Creating an Object w/ an Array of Primitives");
-                Object primObj = objectWithRefs.primitiveArrayObj = (PrimitiveArrayObject) createPrimitiveArrayObject();
-
                 createdObjects.put(createdObjects.size() + 1, objectWithRefs);
                 createdObjects.put(createdObjects.size() + 1, simpleObj);
-                createdObjects.put(createdObjects.size() + 1, primObj);
 
                 printMap(createdObjects);
 
@@ -112,6 +108,7 @@ public class ObjectCreator {
                 System.out.println("\n");
                 Serializer serializer = new Serializer();
                 serializer.serialize(createdObjects);
+                System.exit(0);
             }
             else if(option == 5){
                 System.out.println("Exiting Program.");

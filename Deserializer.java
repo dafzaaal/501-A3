@@ -8,11 +8,23 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 
 public class Deserializer {
+
+     private Document convertXmlToDocument(String xml) {
+        SAXBuilder saxBuilder = new SAXBuilder();
+        try {
+            Document document = saxBuilder.build(new StringReader(xml));
+            return document;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     private final static int PORT = 8000;
 
@@ -32,7 +44,8 @@ public class Deserializer {
                     System.out.println("Received XML:\n" + receivedXml);
 
                     // Convert XML -> document then call deserialize
-                      deserialize(receivedXml);
+                    Document document = convertXmlToDocument(receivedXml);
+                    printDocument(document);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -43,9 +56,20 @@ public class Deserializer {
         }
     }
 
-    public Object deserialize(org.jdom.Document document) {
-        // Given the document, look through it, get the class names and create new instances of the objects
+    // public Object deserialize(Document document) {
+    //     // Given the document, look through it, get the class names and create new instances of the objects
+    // }
+
+    public void printDocument(Document document) {
+        XMLOutputter xmlOutputter = new XMLOutputter();
+        xmlOutputter.setFormat(Format.getPrettyFormat());
+        try {
+            xmlOutputter.output(document, System.out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 
     public static void main(String[] args) {
         Deserializer deserializer = new Deserializer();
