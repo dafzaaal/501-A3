@@ -67,9 +67,9 @@ public class ObjectCreator {
         while(option != 5) {
             System.out.println("---- Object Creator Menu ----");
             System.out.println( "1. Simple Object \n" + 
-                                "2. An object that contains an array of primitives. \n" +  
-                                "3. Create a complex object with references to other objects \n" + 
-                                "4. Finish and send to Serializer \n" + 
+                                "2. Array of Primitives \n" +  
+                                "3. Object w/ Reference to Another Object \n" + 
+                                "4. Finish and Send to Serializer \n" + 
                                 "5. Exit \n");
             option = scanner.nextInt();
 
@@ -88,6 +88,7 @@ public class ObjectCreator {
             else if(option == 2) {
                 Object primitiveArrayObj = createPrimitiveArrayObject();
                 createdObjects.put(createdObjects.size() + 1, primitiveArrayObj);
+                createdObjects.put(createdObjects.size() + 1, null);
                 printMap(createdObjects);
             }
             else if(option == 3) {
@@ -96,12 +97,10 @@ public class ObjectCreator {
                 System.out.println("Creating a Simple Object");
                 Object simpleObj = objectWithRefs.simpleObj = (SimpleObject) createSimpleObject();
 
-                createdObjects.put(createdObjects.size() + 1, objectWithRefs);
+                createdObjects.put(createdObjects.size() + 1, createdObjects.size() + 2);
                 createdObjects.put(createdObjects.size() + 1, simpleObj);
 
                 printMap(createdObjects);
-
-
             }
             else if(option == 4) {
                 System.out.println("Now sending objects to serializer");
