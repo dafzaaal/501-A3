@@ -18,6 +18,18 @@ import java.net.Socket;
 
 public class Serializer {
 
+    public Element getReferenceElement(Field field, int id) {
+        Element fieldInfo = new Element("field");
+
+        fieldInfo.setAttribute("name", field.getName().toString());
+        fieldInfo.setAttribute("declaringclass", field.getDeclaringClass().toString());
+
+        Element reference = new Element("reference");
+        reference.setText(String.valueOf(id + 1));
+
+        return fieldInfo.addContent(reference);
+    }
+
     public Element getSimpleObjectField(Field field, Object value) {
         Element fieldInfo = new Element("field");
 
@@ -95,10 +107,6 @@ public class Serializer {
             Integer intID = entry.getKey();
             objElement.setAttribute("class", classObj.getName());
             objElement.setAttribute("id", id);
-
-
-
-
             
             Field[] fields = classObj.getDeclaredFields();
 
@@ -137,6 +145,10 @@ public class Serializer {
                             objElement.addContent(arrRefElement);
                             rootElement.addContent(arrElement);
 
+                        }
+                        else if(!(type.isPrimitive())) {
+                            Element fieldInfo = getReferenceElement(f, intID);
+                            objElement.addContent(fieldInfo);
                         }
                     }
                     catch (IllegalAccessException e) {

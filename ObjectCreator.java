@@ -97,7 +97,7 @@ public class ObjectCreator {
                 System.out.println("Creating a Simple Object");
                 Object simpleObj = objectWithRefs.simpleObj = (SimpleObject) createSimpleObject();
 
-                createdObjects.put(createdObjects.size() + 1, createdObjects.size() + 2);
+                createdObjects.put(createdObjects.size() + 1, objectWithRefs);
                 createdObjects.put(createdObjects.size() + 1, simpleObj);
 
                 printMap(createdObjects);
