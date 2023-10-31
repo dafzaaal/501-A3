@@ -60,7 +60,7 @@ public class ObjectCreator {
         Scanner scanner = new Scanner(System.in);
         int option = 0;
         Map<String, Integer> mapOfOptions = Map.of("one", 1, "two", 2, 
-        "three", 3, "four", 4, "five", 5);
+        "three", 3, "four", 4, "five", 5, "six", 6, "seven", 7);
         Map<Integer, Object> createdObjects = new IdentityHashMap<>();
         System.out.println("Create a type of Object. \n");
 
@@ -69,8 +69,10 @@ public class ObjectCreator {
             System.out.println( "1. Simple Object \n" + 
                                 "2. Array of Primitives \n" +  
                                 "3. Object w/ Reference to Another Object \n" + 
-                                "4. Finish and Send to Serializer \n" + 
-                                "5. Exit \n");
+                                "4. Array w/ References to Other Objects \n" +
+                                "5. Using a Java Collection Class to Refer to Other Objects \n" + 
+                                "6. Finish and Send to Serializer \n" + 
+                                "7. Exit \n");
             option = scanner.nextInt();
 
             if(!(mapOfOptions.containsValue(option))){
@@ -102,14 +104,24 @@ public class ObjectCreator {
 
                 printMap(createdObjects);
             }
-            else if(option == 4) {
+            else if (option == 4) {
+                ObjectContainer arrayOfObjectRefs = new ObjectContainer();
+                for(int i = 0; i < 2; i ++) {
+                    System.out.println("Creating a Simple Object");
+                    Object simpleObj = (SimpleObject) createSimpleObject();
+                    arrayOfObjectRefs.simpleObjectArray[i] = simpleObj;
+                    createdObjects.put(createdObjects.size() + 1, simpleObj);
+                }
+                createdObjects.put(createdObjects.size() + 1, arrayOfObjectRefs);
+            }
+            else if(option == 6) {
                 System.out.println("Now sending objects to serializer");
                 System.out.println("\n");
                 Serializer serializer = new Serializer();
                 serializer.serialize(createdObjects);
                 System.exit(0);
             }
-            else if(option == 5){
+            else if(option == 7){
                 System.out.println("Exiting Program.");
                 scanner.close();
                 System.exit(0);

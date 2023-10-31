@@ -28,7 +28,8 @@ public class Deserializer {
         SAXBuilder saxBuilder = new SAXBuilder();
         try {
             return saxBuilder.build(new StringReader(xml));
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -56,7 +57,8 @@ public class Deserializer {
                     printDocument(document);
                     deserialize(document);
 
-                } catch (IOException e) {
+                } 
+                catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -72,7 +74,7 @@ public class Deserializer {
         for (Element objectElement : objectElements) {
             String className = objectElement.getAttributeValue("class");
 
-            if(className.equals("int")) {
+            if(className.equals("int[]")) {
                 continue;
             }
 
@@ -97,9 +99,11 @@ public class Deserializer {
                         Class<?> fType = field.getType();
                         if (fType.equals(int.class)) {
                             field.setInt(classInstance, Integer.parseInt(valueStr));
-                        } else if (fType.equals(double.class)) {
+                        } 
+                        else if (fType.equals(double.class)) {
                             field.setDouble(classInstance, Double.parseDouble(valueStr));
-                        } else if (fType.equals(char.class)) {
+                        } 
+                        else if (fType.equals(char.class)) {
                             field.setChar(classInstance, valueStr.charAt(0));
                         }
                     }

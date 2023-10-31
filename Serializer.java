@@ -18,6 +18,14 @@ import java.net.Socket;
 
 public class Serializer {
 
+    private boolean isPrimitive(Object obj) {
+        if (obj instanceof Byte || obj instanceof Short || obj instanceof Integer || obj instanceof Long || 
+            obj instanceof Float || obj instanceof Double || obj instanceof Boolean || obj instanceof Character) {
+            return true;
+        }
+        return false;
+    }
+
     public Element getReferenceElement(Field field, int id) {
         Element fieldInfo = new Element("field");
 
@@ -54,11 +62,23 @@ public class Serializer {
         object.setAttribute("length", String.valueOf(length));
         object.setAttribute("id", String.valueOf(id + 1));
 
+        id -= 1;
+
         for(int i = 0; i < length; i++) {
             Element arrayValue = new Element("value");
-            Object arrayValueAtIndice = Array.get(arrayObject, i);
-            arrayValue.setText(arrayValueAtIndice.toString());
-            object.addContent(arrayValue);
+            Object arrayValueAtIndex = Array.get(arrayObject, i);
+
+            if (arrayValueAtIndex != null && !isPrimitive(arrayValueAtIndex)) {
+                Element reference = new Element("reference");
+                reference.setText(String.valueOf(id));
+                object.addContent(reference);
+                id -= 1;
+            }
+            else {
+                arrayValue.setText(arrayValueAtIndex.toString());
+                object.addContent(arrayValue);  
+            }
+            
         }
 
         return object;
@@ -137,7 +157,6 @@ public class Serializer {
                             objElement.addContent(fieldElement);
                         }
                         else if(type.isArray()) {
-
                             Object arrayObj = f.get(entry.getValue());
                             Element arrElement = getArrayElement(arrayObj, intID, f);
                             Element arrRefElement = getArrayReference(arrayObj, intID, f);
