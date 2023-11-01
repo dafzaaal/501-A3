@@ -22,8 +22,28 @@ import java.util.Map;
 
 public class Deserializer {
 
-    Map<Integer, int[]> refArrays = new IdentityHashMap<>();
+    HashMap<Integer, List<Integer>> referenceMap = new HashMap<>();
 
+    public void mappingReferences(Element rootElement) {
+        List<Element> objectElements = rootElement.getChildren();
+        
+        for(Element objectElement : objectElements) {
+            int objectID = Integer.valueOf(objectElement.getAttributeValue("id"));
+            
+            List<Integer> referenceIDs = new ArrayList<>();
+            for (Element child : objectElement.getChildren("reference")) {
+                int referenceID = Integer.valueOf(child.getText());
+                referenceIDs.add(referenceID);
+            }
+            
+            if (!referenceIDs.isEmpty()) {
+                referenceMap.put(objectID, referenceIDs);
+            }
+        }
+        printReferenceMap(referenceMap);
+    }
+    
+    
     private Document convertXmlToDocument(String xml) {
         SAXBuilder saxBuilder = new SAXBuilder();
         try {
@@ -73,8 +93,10 @@ public class Deserializer {
 
         for (Element objectElement : objectElements) {
             String className = objectElement.getAttributeValue("class");
-
-            if(className.equals("int[]")) {
+            if(className.equals("PrimitiveArrayObject")) {
+                visualizeObjectWithArray(objectElement);
+            }
+            else if(className.equals("int[]")) {
                 continue;
             }
 
@@ -90,6 +112,8 @@ public class Deserializer {
                     String fieldName = fieldElement.getAttributeValue("name");
                     Field field = objClass.getDeclaredField(fieldName);
                     field.setAccessible(true);
+
+
 
 
                     Element valueElement = fieldElement.getChild("value");
@@ -117,48 +141,25 @@ public class Deserializer {
     }
 
 
-    public void visualizeObjectWithArray(int[] arrayValues, Object classObject) {
-        Class<?> classObj = classObject.getClass();
-        boolean flag = false;
+    public void visualizeObjectWithArray(Element  objectElement) {
+        String className = objectElement.getAttributeValue("class");
 
-        System.out.println();
-        System.out.println("---------- Object w/ Primitive Array ----------"); 
+        try {
+            Class<?> objClass = Class.forName(className);
+            Object classInstance = objClass.newInstance();
 
-        System.out.println();
-        System.out.println("Class Name: " + classObj.getName());
+            List<Element> fieldElements = objectElement.getChildren("field");
 
-        Field[] fields = classObj.getFields();
-
-        if(fields.length != 0) {
-            System.out.println();
-            System.out.println("--- Printing Fields ---");
-            flag = true;
-        }
-
-        for(Field field : fields) {
-
-            field.setAccessible(true);
-
-            System.out.println();
-            System.out.println("Field Name: " + field.getName());
-            System.out.println("Field Type: " + field.getType());
-
-            if(field.getType().isArray()) {
-                System.out.println("Array: " + arrayValues);
+            for(Element element : fieldElements) {
+                String fieldName = element.getAttributeValue("name");
+                Field field = objClass.getDeclaredField(fieldName);
+                field.setAccessible(true);
             }
-            System.out.println();
-            
         }
 
-      if(flag) {
-            System.out.println();
-            System.out.println("--- End of Printing Fields ---");
+        catch (Exception e) {
+            e.printStackTrace();
         }
-
-
-        System.out.println();
-        System.out.println("---------- End of Printing Object w/ Primitive Array ----------");
-
     }
 
     public void visualizeObject(Object classObject) {
@@ -214,11 +215,22 @@ public class Deserializer {
         }
     }
 
-    public static void printMap(Map<?, ?> map) {
-        for (Map.Entry<?, ?> entry : map.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+    public void printReferenceMap(HashMap<Integer, List<Integer>> referenceMap) {
+        for (Map.Entry<Integer, List<Integer>> entry : referenceMap.entrySet()) {
+            int objectID = entry.getKey();
+            List<Integer> references = entry.getValue();
+            
+            System.out.print("Object ID: " + objectID + " -> References: ");
+            for (int i = 0; i < references.size(); i++) {
+                System.out.print(references.get(i));
+                if (i < references.size() - 1) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println();
         }
     }
+    
 
 
     public static void main(String[] args) {
