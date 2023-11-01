@@ -30,7 +30,7 @@ public class Serializer {
         Element fieldInfo = new Element("field");
 
         fieldInfo.setAttribute("name", field.getName().toString());
-        fieldInfo.setAttribute("declaringclass", field.getDeclaringClass().toString());
+        fieldInfo.setAttribute("declaringclass", field.getDeclaringClass().getName());
 
         Element reference = new Element("reference");
         reference.setText(String.valueOf(id + 1));
@@ -42,7 +42,7 @@ public class Serializer {
         Element fieldInfo = new Element("field");
 
         fieldInfo.setAttribute("name", field.getName().toString());
-        fieldInfo.setAttribute("declaringclass", field.getDeclaringClass().toString());
+        fieldInfo.setAttribute("declaringclass", field.getDeclaringClass().getName());
 
         Element fieldValue = new Element("value");
         fieldValue.setText(String.valueOf(value));
@@ -54,7 +54,7 @@ public class Serializer {
     public Element getArrayElement(Object arrayObject, int id, Field field) {
 
         int length = Array.getLength(arrayObject);
-        String type = arrayObject.getClass().getTypeName();
+        String type = arrayObject.getClass().getName();
 
         Element object = new Element("object");
 
@@ -88,7 +88,7 @@ public class Serializer {
     public Element getArrayReference(Object arrObject, int id, Field field) {
         Element fieldInfo = new Element("field");
         fieldInfo.setAttribute("name", field.getName());
-        fieldInfo .setAttribute("delcaringclass", field.getDeclaringClass().toString());
+        fieldInfo .setAttribute("delcaringclass", field.getDeclaringClass().getName());
         
         Element reference = new Element("reference");
 
