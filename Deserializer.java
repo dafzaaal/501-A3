@@ -166,6 +166,11 @@ public class Deserializer {
     }
 
     public void printObject(Object classObject) {
+
+        if(classObject.getClass().isArray() && classObject.getClass().getComponentType().isPrimitive()) {
+            return;
+        }
+
         System.out.println();
         System.out.println("-------- Printing Object Information --------");
 
@@ -186,16 +191,41 @@ public class Deserializer {
             field.setAccessible(true);
             try {
                 System.out.println();
-                System.out.println("Field Name: " + field.getName() + ", Field Type: " + field.getType() + ", Field Value: " + field.get(classObject));
+                System.out.println("Field Name: " + field.getName());
+
+                System.out.println();
+                System.out.println("Field Type: " + field.getType());
+
+                if(field.getType().isArray()) {
+                    Object fieldValue = field.get(classObject);
+                    int length = Array.getLength(fieldValue);
+                    System.out.println("Array Length: " + length);
+                    System.out.print("Array Content: [");
+                    for (int i = 0; i < length; i++) {
+                        System.out.print(Array.get(fieldValue, i));
+                        if (i < length - 1) {
+                            System.out.print(", ");
+                        }
+                    }
+                    System.out.println("]");
+                }
+                else {
+                    System.out.println();
+                    System.out.println("Field Value: " + field.get(classObject)); 
+                }
+
+                
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            
         }
         if(fields.length != 0) {
             System.out.println();
             System.out.println("--- End of Printing Field Information ---");
         }
-
         System.out.println();
         System.out.println("-------- End of Printing Object Information --------");
 

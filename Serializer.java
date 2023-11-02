@@ -88,7 +88,7 @@ public class Serializer {
     public Element getArrayReference(Object arrObject, int id, Field field) {
         Element fieldInfo = new Element("field");
         fieldInfo.setAttribute("name", field.getName());
-        fieldInfo .setAttribute("delcaringclass", field.getDeclaringClass().getName());
+        fieldInfo .setAttribute("declaringclass", field.getDeclaringClass().getName());
         
         Element reference = new Element("reference");
 
