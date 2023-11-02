@@ -77,6 +77,12 @@ public class Deserializer {
         return table.get("0");
     }
 
+    /*
+        The following method createInstances() is taken from the following source: Java Reflection in Action by Ira R. Forman and Nate Forman
+        I in no way take any credit for this method and am only using it for the purpose of this assignment. The code can be found page 65 of the book.
+        specifically section 3.5
+     */
+
     public void createInstances(Map table, List objList)
             throws Exception {
         for (int i = 0; i < objList.size(); i++) {
@@ -97,6 +103,12 @@ public class Deserializer {
             table.put(oElt.getAttributeValue("id"), instance);
         }
     }
+
+    /*
+        The following method assignFieldValues() is taken from the following source: Java Reflection in Action by Ira R. Forman and Nate Forman
+        I in no way take any credit for this method and am only using it for the purpose of this assignment. The code can be found page 67 of the book.
+        specifically section 3.5
+     */
 
     public void assignFieldValues(Map table, List objList)
             throws Exception {
@@ -128,6 +140,12 @@ public class Deserializer {
             }
         }
     }
+
+    /*
+        The following method deserializeValue() is taken from the following source: Java Reflection in Action by Ira R. Forman and Nate Forman
+        I in no way take any credit for this method and am only using it for the purpose of this assignment. The code can be found page 68 of the book.
+        specifically section 3.5
+     */
 
     public Object deserializeValue(Element vElt,
             Class fieldType,
