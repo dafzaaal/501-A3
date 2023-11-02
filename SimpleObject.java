@@ -6,12 +6,4 @@ public class SimpleObject {
     // Empty constructor
     public SimpleObject() {}
 
-    @Override
-    public String toString() {
-        return "SimpleObject { " +
-            "intValue=" + intValue +
-            ", doubleValue=" + doubleValue +
-            ", charValue=" + charValue +
-            " }";
-    }
 }
